@@ -3,6 +3,8 @@ import loggify from './loggify'
 
 class App extends Component {
 
+  static displayName = 'App'
+
   render() {
     return (
       <div>
