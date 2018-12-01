@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 
 class App extends Component {
 
-  // method #1
   static displayName = "NewNamedApp" // the <App> tag will be changed and can be seen on React Devtools ...
 
+  // method #1
+  static defaultProps = {
+    someImportArray: []
+  }
+
   render() {
+    console.log(this.props)
     return (
       <h1>
         Hello
@@ -15,6 +20,8 @@ class App extends Component {
 }
 
 // method #2
-// App.displayName = "WhateverApp" // the <App> tag will be changed and can be seen on React Devtools ...
+/*App.defaultProps = {
+  someImportArray: []
+}*/
 
 export default App;
