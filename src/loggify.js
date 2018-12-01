@@ -8,7 +8,8 @@ export default function loggify(Wrapped) {
   const methodsToLog = [
     "componentWillMount",
     "componentDidMount",
-    "componentWillUnmount"
+    "componentWillUnmount",
+    "UNSAFE_componentWillReceiveProps", // UNSAFE_componentWillReceiveProps is legacy so, it replaced by static getDerivedStateFromProps(nextProps, prevState) ...
   ]
 
   methodsToLog.forEach((method) => {
@@ -18,20 +19,23 @@ export default function loggify(Wrapped) {
     Wrapped.prototype[method] = function(...args) {
       let original = originals[method]
       console.groupCollapsed(`${Wrapped.displayName} called ${method}`)
+      if (method === 'UNSAFE_componentWillReceiveProps') {
+        console.log('nextProps', args[0])
+      }
       console.groupEnd()
       if (original) {
         original = original.bind(this)
         original(...args)
       }
     }
-    Wrapped.prototype.setState = function (partialState, callback) {
-      console.groupCollapsed(`${Wrapped.displayName} setState`)
-      console.log('partialState', partialState)
-      console.log('callback', callback)
-      console.groupEnd()
-      this.updater.enqueueSetState(this, partialState, callback, 'setState')
-    }
   })
+  Wrapped.prototype.setState = function (partialState, callback) {
+    console.groupCollapsed(`${Wrapped.displayName} setState`)
+    console.log('partialState', partialState)
+    console.log('callback', callback)
+    console.groupEnd()
+    this.updater.enqueueSetState(this, partialState, callback, 'setState')
+  }
 
   return class extends Component {
     render() {
