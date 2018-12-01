@@ -24,6 +24,13 @@ export default function loggify(Wrapped) {
         original(...args)
       }
     }
+    Wrapped.prototype.setState = function (partialState, callback) {
+      console.groupCollapsed(`${Wrapped.displayName} setState`)
+      console.log('partialState', partialState)
+      console.log('callback', callback)
+      console.groupEnd()
+      this.updater.enqueueSetState(this, partialState, callback, 'setState')
+    }
   })
 
   return class extends Component {
