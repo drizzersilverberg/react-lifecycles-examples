@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import loggify from './loggify'
 
 class App extends Component {
 
@@ -10,5 +11,7 @@ class App extends Component {
     );
   }
 }
+
+App = loggify(App)
 
 export default App;
