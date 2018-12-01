@@ -5,12 +5,23 @@ class App extends Component {
   static displayName = "NewNamedApp" // the <App> tag will be changed and can be seen on React Devtools ...
 
   // method #1
-  static defaultProps = {
-    someImportArray: []
+  state = {
+    ourInitialState: "golden"
+  }
+
+  constructor(props) {
+    super(props)
+
+    // method #2
+    /*this.state = {
+      whateverValue: "we want"
+    }*/
+
+    /* NOTE: Don't use this.setState() inside constructor */
   }
 
   render() {
-    console.log(this.props)
+    console.log(this.state)
     return (
       <h1>
         Hello
@@ -18,10 +29,5 @@ class App extends Component {
     );
   }
 }
-
-// method #2
-/*App.defaultProps = {
-  someImportArray: []
-}*/
 
 export default App;
