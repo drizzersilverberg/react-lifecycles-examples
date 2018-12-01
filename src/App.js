@@ -2,30 +2,36 @@ import React, { Component } from 'react';
 
 class App extends Component {
 
-  static displayName = "NewNamedApp" // the <App> tag will be changed and can be seen on React Devtools ...
-
-  // method #1
-  state = {
-    ourInitialState: "golden"
-  }
-
   constructor(props) {
     super(props)
 
-    // method #2
-    /*this.state = {
-      whateverValue: "we want"
-    }*/
+    this.oneFunction = this.oneFunction.bind(this)
+  }
 
-    /* NOTE: Don't use this.setState() inside constructor */
+  oneFunction() {
+    console.log('oneFunction')
+    console.log(this.props)
+  }
+
+  useArrows = () => {
+    console.log('useArrows works without binding')
+    console.log(this.props)
   }
 
   render() {
-    console.log(this.state)
     return (
-      <h1>
-        Hello
-      </h1>
+      <div>
+        <button
+          onClick={this.oneFunction}
+        >
+          test oneFunction
+        </button>
+        <button
+          onClick={this.useArrows}
+        >
+          test useArrows
+        </button>
+      </div>
     );
   }
 }
