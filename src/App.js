@@ -36,7 +36,7 @@ class App extends Component {
     this.pollInterval = setInterval(
       () => {
         this.setState({
-          parentPoll: getRandomInt(1, 5)
+          parentPoll: getRandomInt(1, 2)
         })
       },
       1000
@@ -86,7 +86,7 @@ class PollChild extends Component {
   }
 
   componentDidMount() {
-    this.pollData()
+    // this.pollData()
   }
 
   componentWillUnmount() {
@@ -97,14 +97,29 @@ class PollChild extends Component {
     this.pollInterval = setInterval(() => {
       console.log("Poll!")
       this.setState({
-        poll: Math.random()
+        poll: getRandomInt(1,4)
       })
     }, 1000)
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    // this will optimize to re-render pollchild only if props and state are changed
+    if (nextProps.parentPoll !== this.props.parentPoll) {
+      return true // change and re-render
+    }
+    if (nextState.poll !== this.state.poll) {
+      return true // change and re-render
+    }
+    return false // no change and no render
+  }
+
   render() {
+    console.log('PollChild rerendered')
     return (
-      <h4>poll: {this.state.poll}</h4>
+      <div>
+        <h4>poll: {this.state.poll}</h4>
+        <h4>parentPoll: {this.props.parentPoll}</h4>
+      </div>
     )
   }
 }

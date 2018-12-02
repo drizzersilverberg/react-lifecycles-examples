@@ -10,6 +10,7 @@ export default function loggify(Wrapped) {
     "componentDidMount",
     "componentWillUnmount",
     "UNSAFE_componentWillReceiveProps", // UNSAFE_componentWillReceiveProps is legacy so, it replaced by static getDerivedStateFromProps(nextProps, prevState) ...
+    "shouldComponentUpdate",
   ]
 
   methodsToLog.forEach((method) => {
@@ -19,13 +20,19 @@ export default function loggify(Wrapped) {
     Wrapped.prototype[method] = function(...args) {
       let original = originals[method]
       console.groupCollapsed(`${Wrapped.displayName} called ${method}`)
-      if (method === 'UNSAFE_componentWillReceiveProps') {
+      if (method === 'UNSAFE_componentWillReceiveProps' || 'shouldComponentUpdate') {
         console.log('nextProps', args[0])
+      }
+      if (method === 'shouldComponentUpdate') {
+        console.log('nextState', args[1])
       }
       console.groupEnd()
       if (original) {
         original = original.bind(this)
-        original(...args)
+        return original(...args)
+      }
+      if (method === 'shouldComponentUpdate' && typeof original === 'undefined') {
+        return true
       }
     }
   })
