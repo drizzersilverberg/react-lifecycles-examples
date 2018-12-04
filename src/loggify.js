@@ -12,6 +12,7 @@ export default function loggify(Wrapped) {
     "UNSAFE_componentWillReceiveProps", // UNSAFE_componentWillReceiveProps is legacy so, it replaced by static getDerivedStateFromProps(nextProps, prevState) ...
     "shouldComponentUpdate",
     "componentWillUpdate",
+    "componentDidUpdate",
   ]
 
   methodsToLog.forEach((method) => {
@@ -26,6 +27,12 @@ export default function loggify(Wrapped) {
       }
       if (method === 'shouldComponentUpdate' || 'componentWillUpdate') {
         console.log('nextState', args[1])
+      }
+      if (
+        method === 'componentDidUpdate'
+      ) {
+        console.log('prevProps', args[0])
+        console.log('prevState', args[1])
       }
       console.groupEnd()
       if (original) {
